@@ -1,11 +1,10 @@
-package gopur.ui.frame;
+package gopur.uiFunc.ui.frame;
 
 import gopur.Gopur;
-import gopur.input.InputMode;
-import gopur.zip.Zip;
+import gopur.uiFunc.input.InputMode;
+import gopur.uiFunc.zip.Zip;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;

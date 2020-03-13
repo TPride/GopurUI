@@ -1,6 +1,7 @@
-package gopur;
+package gopur.uiFunc;
 
-import gopur.interfaces.Information;
+import gopur.Gopur;
+import gopur.uiFunc.interfaces.Information;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
@@ -193,6 +194,15 @@ public class GopurTool {
                 else break;
             }
             return ii == chars.length;
+        }
+
+        private String[] sort(String[] array) {
+            if (array.length == 0)
+                return new String[0];
+            for (int i = 0; i < array.length; i++) {
+
+            }
+            return array;
         }
     }
 }

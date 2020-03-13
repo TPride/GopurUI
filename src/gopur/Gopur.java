@@ -1,12 +1,34 @@
 package gopur;
 
-import gopur.execute.GopurExecute;
-import gopur.input.InputReceive;
-import gopur.interfaces.CmdKey;
-import gopur.interfaces.Information;
-import gopur.thread.ThreadCount;
-import gopur.ui.GopurUI;
-import gopur.ui.frame.GopurCommandWindow;
+//                       _oo0oo_
+//                      o8888888o
+//                      88" . "88
+//                      (| -_- |)
+//                      0\  =  /0
+//                    ___/`---'\___
+//                  .' \\|     |// '.
+//                 / \\|||  :  |||// \
+//                / _||||| -:- |||||- \
+//               |   | \\\  -  /// |   |
+//               | \_|  ''\---/''  |_/ |
+//               \  .-\__  '-'  ___/-. /
+//             ___'. .'  /--.--\  `. .'___
+//          ."" '<  `.___\_<|>_/___.' >' "".
+//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//         \  \ `_.   \_ __\ /__ _/   .-` /  /
+//     =====`-.____`.___ \_____/___.-`___.-'=====
+//                       `=---='
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//               佛祖保佑         永无BUG
+
+import gopur.uiFunc.GopurTool;
+import gopur.uiFunc.execute.GopurExecute;
+import gopur.uiFunc.input.InputReceive;
+import gopur.uiFunc.interfaces.CmdKey;
+import gopur.uiFunc.interfaces.Information;
+import gopur.uiFunc.thread.ThreadCount;
+import gopur.uiFunc.ui.GopurUI;
+import gopur.uiFunc.ui.frame.GopurCommandWindow;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
 
@@ -78,7 +100,6 @@ public class Gopur {
         };
         commandWindow = gopurUI.commandWindows();
         commandWindow.Print("Gopur > 欢迎使用GopurUI v".concat(Information.VERSION).concat("\n"));
-
     }
 
     public static void main(String[] args) {

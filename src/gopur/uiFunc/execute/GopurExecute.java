@@ -1,13 +1,12 @@
-package gopur.execute;
-import gopur.thread.CheckRunnable;
-import gopur.thread.CheckRunnable2;
-import gopur.zip.Zip;
+package gopur.uiFunc.execute;
+import gopur.uiFunc.thread.CheckRunnable;
+import gopur.uiFunc.thread.CheckRunnable2;
+import gopur.uiFunc.zip.Zip;
 import gopur.Gopur;
-import gopur.GopurTool;
-import gopur.input.InputMode;
-import gopur.interfaces.CmdKey;
-import gopur.interfaces.Information;
-
+import gopur.uiFunc.GopurTool;
+import gopur.uiFunc.input.InputMode;
+import gopur.uiFunc.interfaces.CmdKey;
+import gopur.uiFunc.interfaces.Information;
 import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedHashMap;

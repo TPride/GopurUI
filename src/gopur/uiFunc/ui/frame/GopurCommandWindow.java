@@ -1,9 +1,9 @@
-package gopur.ui.frame;
+package gopur.uiFunc.ui.frame;
 
 import gopur.Gopur;
-import gopur.GopurTool;
-import gopur.input.InputMode;
-import gopur.interfaces.Information;
+import gopur.uiFunc.GopurTool;
+import gopur.uiFunc.input.InputMode;
+import gopur.uiFunc.interfaces.Information;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -121,12 +121,11 @@ public class GopurCommandWindow {
                 ///////////////////////////////////////////////
 
                 /**
-                 * TAB自动联想
+                 * CTRL自动联想
                  */
                 ///////////////////////////////////////////////
-                if (e.getKeyCode() == KeyEvent.VK_TAB) {
+                if (e.getKeyCode() == KeyEvent.VK_ALT) {
                     if (!isTab) {
-                        System.out.println("a");
                         if (textField.getText() == null || textField.getText().contains(" "))
                             return;
                         String[] strings = Gopur.gopurTool.getTabInput().matchCommands(textField.getText());
@@ -139,7 +138,6 @@ public class GopurCommandWindow {
                         }
                         textField.setText(strings[0]);
                     } else {
-                        System.out.println("b");
                         if (tabArrayIndex + 1 >= tabArray.length)
                             tabArrayIndex = 0;
                         else

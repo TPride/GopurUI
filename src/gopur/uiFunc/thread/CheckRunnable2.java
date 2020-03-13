@@ -1,7 +1,6 @@
-package gopur.thread;
+package gopur.uiFunc.thread;
 
-import gopur.GopurTool;
-import gopur.input.InputMode;
+import gopur.uiFunc.input.InputMode;
 import gopur.Gopur;
 
 /**

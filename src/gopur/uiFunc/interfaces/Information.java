@@ -1,4 +1,4 @@
-package gopur.interfaces;
+package gopur.uiFunc.interfaces;
 
 import java.io.File;
 
