@@ -122,7 +122,7 @@ public class GopurTool {
             if (!pattern.matcher(port).matches()) return false;
             if ((Integer.parseInt(port) < 1 || Integer.parseInt(port) > 65535)) return false;
             if (isConnectable(port)) {
-                Gopur.getInstance().commandWindow.Print("\t" + port.concat(" - ").concat("开启") + "\n");
+                Gopur.getInstance().commandWindow.print("\t" + port.concat(" - ").concat("开启") + "\n");
                 return true;
             }
             return false;

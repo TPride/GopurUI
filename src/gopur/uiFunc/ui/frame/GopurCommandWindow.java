@@ -19,7 +19,8 @@ public class GopurCommandWindow {
     private String[] tabArray = null;
 
     public GopurCommandWindow() {
-        jFrame.setTitle("GopurUI v".concat(Information.VERSION));
+        jFrame.setTitle("[GopurUI] - ".concat(Information.VERSION));
+        jFrame.setAlwaysOnTop(true);
         jFrame.setSize(700, 600);
         jFrame.setIconImage(new ImageIcon("resource/gopur.png").getImage());
         jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
@@ -34,6 +35,7 @@ public class GopurCommandWindow {
         });
 
         JTextField textField = new JTextField();
+        textField.setFocusTraversalKeysEnabled(false);
         textField.setFont(new Font(null, Font.BOLD, 14));
         textField.addActionListener(new ActionListener() {
             @Override
@@ -121,10 +123,10 @@ public class GopurCommandWindow {
                 ///////////////////////////////////////////////
 
                 /**
-                 * CTRL自动联想
+                 * TAB自动联想
                  */
                 ///////////////////////////////////////////////
-                if (e.getKeyCode() == KeyEvent.VK_ALT) {
+                if (e.getKeyCode() == KeyEvent.VK_TAB) {
                     if (!isTab) {
                         if (textField.getText() == null || textField.getText().contains(" "))
                             return;
@@ -240,7 +242,7 @@ public class GopurCommandWindow {
         textArea.append("Input > ".concat(string).concat("\n"));
     }
 
-    public void Print(String string) {
+    public void print(String string) {
         textArea.append(string);
     }
 

@@ -29,6 +29,8 @@ import gopur.uiFunc.interfaces.Information;
 import gopur.uiFunc.thread.ThreadCount;
 import gopur.uiFunc.ui.GopurUI;
 import gopur.uiFunc.ui.frame.GopurCommandWindow;
+
+import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
 
@@ -99,7 +101,7 @@ public class Gopur {
             }
         };
         commandWindow = gopurUI.commandWindows();
-        commandWindow.Print("Gopur > 欢迎使用GopurUI v".concat(Information.VERSION).concat("\n"));
+        commandWindow.print("Gopur > 欢迎使用GopurUI v".concat(Information.VERSION).concat("\n"));
     }
 
     public static void main(String[] args) {

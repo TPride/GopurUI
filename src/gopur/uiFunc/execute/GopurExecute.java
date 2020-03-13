@@ -117,7 +117,7 @@ public class GopurExecute {
                             Gopur.receive.setMode(InputMode.CMD);
                             break;
                         }
-                        Gopur.getInstance().commandWindow.Print("Gopur > 请耐心等待, 正在扫描...\n");
+                        Gopur.getInstance().commandWindow.print("Gopur > 请耐心等待, 正在扫描...\n");
                         Gopur.count.setCount(ports.length);
                         executorService = Executors.newFixedThreadPool(Gopur.count.getCount());
                         for (int i = 0; i < Gopur.count.getCount(); i++)
@@ -148,7 +148,7 @@ public class GopurExecute {
                             Gopur.receive.setMode(InputMode.CMD);
                             break;
                         }
-                        Gopur.getInstance().commandWindow.Print("Gopur > 请耐心等待, 正在扫描...\n");
+                        Gopur.getInstance().commandWindow.print("Gopur > 请耐心等待, 正在扫描...\n");
                         Gopur.count.setCount(((begin > end) ? begin - end : end - begin));
                         executorService = Executors.newFixedThreadPool(Gopur.count.getCount());
                         if (begin > end) {
@@ -170,7 +170,7 @@ public class GopurExecute {
                             Gopur.receive.setMode(InputMode.CMD);
                             break;
                         }
-                        Gopur.getInstance().commandWindow.Print("Gopur > 请耐心等待, 正在扫描...\n");
+                        Gopur.getInstance().commandWindow.print("Gopur > 请耐心等待, 正在扫描...\n");
                         if (!portCheck.checkPrint(args[1]))
                             Gopur.getInstance().commandWindow.GopurPrintln(args[1] + " 端口超时");
                         else
