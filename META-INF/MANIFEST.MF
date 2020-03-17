@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: gopur.Gopur
+Class-Path: libs/zip4j.jar libs/SnakeYaml.jar
+
