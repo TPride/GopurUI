@@ -1,6 +1,6 @@
-package gopur.uiFunc.thread;
+package gopur.ui.thread;
 
-import gopur.uiFunc.GopurTool;
+import gopur.GopurTool;
 import gopur.Gopur;
 
 /**

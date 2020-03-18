@@ -8,6 +8,7 @@ public class PluginBase implements Plugin {
     private boolean isInitalized = false;
     private PluginDescription description;
     private File dataFolder;
+    private Logger logger;
 
     @Override
     public void onLoad() {
@@ -52,6 +53,11 @@ public class PluginBase implements Plugin {
         return loader;
     }
 
+    @Override
+    public Logger getLogger() {
+        return logger;
+    }
+
     public final File getDataFolder() {
         return dataFolder;
     }
@@ -66,6 +72,7 @@ public class PluginBase implements Plugin {
             this.loader = loader;
             this.description = description;
             this.dataFolder = dataFolder;
+            logger = new PluginLogger(this);
         }
     }
 

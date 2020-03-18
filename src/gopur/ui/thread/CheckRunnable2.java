@@ -1,6 +1,6 @@
-package gopur.uiFunc.thread;
+package gopur.ui.thread;
 
-import gopur.uiFunc.input.InputMode;
+import gopur.ui.input.InputMode;
 import gopur.Gopur;
 
 /**
@@ -15,9 +15,9 @@ public class CheckRunnable2 implements Runnable {
                     if (Gopur.receive.getMode() == InputMode.DONT)
                         Gopur.receive.setMode(InputMode.CMD);
                     if (Gopur.count.getHave() == 0)
-                        Gopur.getInstance().commandWindow.GopurPrintln("未扫描到已开放的端口");
+                        Gopur.getLogger().info("未扫描到已开放的端口", 2);
                     else
-                        Gopur.getInstance().commandWindow.GopurPrintln("扫描完毕");
+                        Gopur.getLogger().info("扫描完毕", 2);
                     break;
                 }
                 Thread.sleep(500); //每一秒执行一次

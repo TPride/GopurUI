@@ -21,92 +21,42 @@ package gopur;
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //               佛祖保佑         永无BUG
 
-import gopur.plugin.JarPluginLoader;
-import gopur.plugin.Plugin;
-import gopur.plugin.PluginManager;
-import gopur.uiFunc.GopurTool;
-import gopur.uiFunc.execute.GopurExecute;
-import gopur.uiFunc.input.InputReceive;
-import gopur.uiFunc.interfaces.CmdKey;
-import gopur.uiFunc.interfaces.Information;
-import gopur.uiFunc.thread.ThreadCount;
-import gopur.uiFunc.ui.GopurUI;
-import gopur.uiFunc.ui.frame.GopurCommandWindow;
+import gopur.command.SimpleCommandMap;
+import gopur.plugin.*;
+import gopur.ui.input.InputReceive;
+import gopur.ui.thread.ThreadCount;
+import gopur.ui.GopurUI;
+import gopur.ui.frame.GopurCommandWindow;
 import java.io.File;
-import java.util.LinkedHashMap;
 import java.util.ArrayList;
 
 public class Gopur {
     public final GopurUI gopurUI = new GopurUI();
     private static Gopur instance;
-    public final LinkedHashMap<String, LinkedHashMap<String, String>> cmds;
     public final ArrayList<String> inputed = new ArrayList<>();
     public int index = inputed.size();
-    public final GopurCommandWindow commandWindow;
     public static final GopurTool gopurTool = new GopurTool();
     public static final InputReceive receive = new InputReceive();
     public static final ThreadCount count = new ThreadCount(0);
-    public static final GopurExecute gopurExecute = new GopurExecute();
-    private PluginManager pluginManager = new PluginManager();
+    private static final Logger mainLogger = new MainLogger();
+    private final GopurCommandWindow commandWindow;
+    private final PluginManager pluginManager;
+    private final SimpleCommandMap commandMap;
 
     public Gopur() {
         instance = this;
         initDir();
-        cmds = new LinkedHashMap<String, LinkedHashMap<String, String>>() {
-            {
-                put("help", new LinkedHashMap<String, String>() {
-                    {
-                        put(CmdKey.DESCRIPTION, "查看指令帮助");
-                        put(CmdKey.USAGE, "help <cmd>");
-                    }
-                });
-                put("ifm", new LinkedHashMap<String, String>() {
-                    {
-                        put(CmdKey.DESCRIPTION, "查看Gopur与本机信息");
-                        put(CmdKey.USAGE, "ifm");
-                    }
-                });
-                put("exit", new LinkedHashMap<String, String>() {
-                    {
-                        put(CmdKey.DESCRIPTION, "退出Gopur进程");
-                        put(CmdKey.USAGE, "exit");
-                    }
-                });
-                put("cls", new LinkedHashMap<String, String>() {
-                    {
-                        put(CmdKey.DESCRIPTION, "清空消息");
-                        put(CmdKey.USAGE, "cls");
-                    }
-                });
-                put("parse", new LinkedHashMap<String, String>() {
-                    {
-                        put(CmdKey.DESCRIPTION, "解析域名");
-                        put(CmdKey.USAGE, "parse <DomainName1,DomainName2...>");
-                    }
-                });
-                put("port", new LinkedHashMap<String, String>() {
-                    {
-                        put(CmdKey.DESCRIPTION, "端口扫描");
-                        put(CmdKey.USAGE, "port <IpAddress> [<port,port1...>||<port-port1>]");
-                    }
-                });
-                put("ping", new LinkedHashMap<String, String>() {
-                    {
-                        put(CmdKey.DESCRIPTION, "发送Ping包");
-                        put(CmdKey.USAGE, "ping <IpAddress>");
-                    }
-                });
-                put("zip", new LinkedHashMap<String, String>() {
-                    {
-                        put(CmdKey.DESCRIPTION, "ZIP文件操作");
-                        put(CmdKey.USAGE, "zip");
-                    }
-                });
-            }
-        };
+        commandMap = new SimpleCommandMap();
         commandWindow = gopurUI.commandWindows();
-        commandWindow.print("Gopur > 欢迎使用GopurUI v".concat(Information.VERSION).concat("\n"));
-        init();
+        /**
+         * Plugins init
+         */
+        pluginManager = new PluginManager();
+        pluginManager.registerInterface(JarPluginLoader.class);
+
+        Gopur.getLogger().info("欢迎使用GopurUI v".concat(Information.VERSION));
+
+        pluginManager.enablePlugins();
     }
 
     public static void main(String[] args) {
@@ -126,22 +76,19 @@ public class Gopur {
             new File(Information.NOWPATH + "plugins").mkdirs();
     }
 
-    public void init() {
-        pluginManager = new PluginManager();
-        pluginManager.registerInterface(JarPluginLoader.class);
-        File[] files = new File(Information.NOWPATH + "plugins").listFiles();
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory())
-                continue;
-            pluginManager.loadPlugin(files[i], null);
-        }
-        for (Plugin plugin : new ArrayList<>(pluginManager.getPlugins().values())) {
-            if (!plugin.isEnabled())
-                pluginManager.enablePlugin(plugin);
-        }
+    public GopurCommandWindow getCommandWindow() {
+        return commandWindow;
     }
 
-    public PluginManager getPluginManager() {
+    public final PluginManager getPluginManager() {
         return pluginManager;
+    }
+
+    public final SimpleCommandMap getCommandMap() {
+        return commandMap;
+    }
+
+    public static final Logger getLogger() {
+        return mainLogger;
     }
 }

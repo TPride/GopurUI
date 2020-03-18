@@ -1,4 +1,4 @@
-package gopur.uiFunc.input;
+package gopur.ui.input;
 
 /**
  * Created by TPride on 2020/2/14.

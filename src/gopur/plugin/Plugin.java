@@ -8,4 +8,5 @@ public interface Plugin {
     boolean isDisabled();
     PluginDescription getPluginDescription();
     PluginLoader getPluginLoader();
+    Logger getLogger();
 }

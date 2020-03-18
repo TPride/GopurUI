@@ -5,5 +5,5 @@ public interface DescriptionKey {
     String MAIN = "main";
     String DESCRIPTION = "description";
     String VERSION = "version";
-    String AUTHORS = "authors";
+    String AUTHOR = "author";
 }

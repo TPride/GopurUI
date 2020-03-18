@@ -1,10 +1,11 @@
 package gopur.plugin;
 
 import gopur.Gopur;
-
+import gopur.Information;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -52,7 +53,7 @@ public class PluginManager {
                                 return plugin;
                             }
                         } catch (Exception e) {
-                            Gopur.getInstance().commandWindow.GopurPrint("无法加载插件" + file.getName() + "'\n");
+                            Gopur.getLogger().info("无法加载插件" + file.getName());
                             return null;
                         }
                     }
@@ -67,6 +68,32 @@ public class PluginManager {
             plugin.getPluginLoader().enablePlugin(plugin);
         } catch (Exception e) {
             plugin.getPluginLoader().disablePlugin(plugin);
+        }
+    }
+
+    public void enablePlugins() {
+        File[] files = new File(Information.NOWPATH + "plugins").listFiles();
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isDirectory())
+                continue;
+            Plugin plugin = loadPlugin(files[i], null);
+            if (plugin != null) {
+                if (!plugin.isEnabled())
+                    enablePlugin(plugin);
+            }
+        }
+    }
+
+    public void disablePlugin(Plugin plugin) {
+        if (plugin.isEnabled())
+            plugin.getPluginLoader().disablePlugin(plugin);
+    }
+
+    public void disablePlugins() {
+        for (Iterator<Plugin> iterator = plugins.values().iterator(); iterator.hasNext();) {
+            Plugin plugin = iterator.next();
+            Gopur.getLogger().info("正在停用 " + plugin.getPluginDescription().getFullName() + "...");
+            disablePlugin(plugin);
         }
     }
 }

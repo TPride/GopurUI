@@ -3,12 +3,11 @@ package gopur.plugin;
 import gopur.utils.PluginException;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
-
 import java.util.*;
 
 public class PluginDescription implements DescriptionKey {
     /**
-     * 每一个插件的plugin.yml
+     * 每一个插件的描述
      */
 
     private String name; //Plugin Name
@@ -36,9 +35,9 @@ public class PluginDescription implements DescriptionKey {
         main = String.valueOf(map.get(MAIN));
         description = String.valueOf(map.get(DESCRIPTION));
         version = String.valueOf(map.get(VERSION));
-        String author = String.valueOf(map.get(AUTHORS)).replace(" ", "");
+        String author = String.valueOf(map.get(AUTHOR));
         if (author.contains(","))
-            authors.addAll((Collection<? extends String>) map.get(AUTHORS));
+            authors.addAll(new ArrayList<>(author.split(",").length));
         else
             authors.add(author);
     }

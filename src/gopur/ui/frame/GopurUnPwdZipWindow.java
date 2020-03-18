@@ -1,8 +1,8 @@
-package gopur.uiFunc.ui.frame;
+package gopur.ui.frame;
 
 import gopur.Gopur;
-import gopur.uiFunc.input.InputMode;
-import gopur.uiFunc.zip.Zip;
+import gopur.ui.input.InputMode;
+import gopur.utils.Zip;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -29,7 +29,7 @@ public class GopurUnPwdZipWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (textField.getText() == null || textField.getText().equalsIgnoreCase("") || textField.getText().replace(" ", "  ").length() == 0) {
-                    Gopur.getInstance().commandWindow.GopurPrintln("请输入".concat(filename).concat("的解压密码"));
+                    Gopur.getLogger().info("请输入".concat(filename).concat("的解压密码"), 2);
                     return;
                 }
                 jFrame.dispose();
@@ -39,13 +39,13 @@ public class GopurUnPwdZipWindow {
                 start = System.currentTimeMillis();
                 bo_result = Zip.unzip(path, destino, textField.getText());
                 second = System.currentTimeMillis() - start;
-                Gopur.getInstance().commandWindow.GopurPrintln(bo_result ? ""
+                Gopur.getLogger().info(bo_result ? ""
                         .concat("解压成功")
                         .concat("\n\t解压至路径: ".concat(destino))
                         .concat("\n\t用时: ".concat(second + "ms"))
                         :
                         "解压失败, 密码错误"
-                );
+                , 2);
             }
         });
 
@@ -57,7 +57,7 @@ public class GopurUnPwdZipWindow {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                Gopur.getInstance().commandWindow.GopurPrintln("已取消对".concat(filename).concat("的解压"));
+                Gopur.getLogger().info("已取消对".concat(filename).concat("的解压"), 2);
                 Gopur.receive.setMode(InputMode.CMD);
             }
         });

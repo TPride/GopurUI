@@ -1,7 +1,7 @@
-package gopur.uiFunc.ui;
+package gopur.ui;
 
-import gopur.uiFunc.ui.frame.GopurCommandWindow;
-import gopur.uiFunc.ui.frame.GopurUnPwdZipWindow;
+import gopur.ui.frame.GopurCommandWindow;
+import gopur.ui.frame.GopurUnPwdZipWindow;
 
 public class GopurUI {
 

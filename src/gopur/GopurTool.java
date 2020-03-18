@@ -1,11 +1,8 @@
-package gopur.uiFunc;
+package gopur;
 
-import gopur.Gopur;
-import gopur.uiFunc.interfaces.Information;
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class GopurTool {
@@ -43,11 +40,6 @@ public class GopurTool {
         } catch (NullPointerException e) {
             return new String[0];
         }
-    }
-
-    public static boolean clearConsole() {
-        Gopur.getInstance().commandWindow.clear();
-        return true;
     }
 
     public DomainName getDomainName(String domainName) {
@@ -111,18 +103,18 @@ public class GopurTool {
 
         public boolean checkPrint(String port) {
             if (domainName.parse().equalsIgnoreCase("~")) {
-                Gopur.getInstance().commandWindow.GopurPrintln("无效IP");
+                Gopur.getLogger().info("无效IP", 2);
                 return false;
             }
             if (port == null || port.length() == 0) {
-                Gopur.getInstance().commandWindow.GopurPrintln("无输入的端口");
+                Gopur.getLogger().info("无输入的端口", 2);
                 return false;
             }
             Pattern pattern = Pattern.compile("[0-9]*");
             if (!pattern.matcher(port).matches()) return false;
             if ((Integer.parseInt(port) < 1 || Integer.parseInt(port) > 65535)) return false;
             if (isConnectable(port)) {
-                Gopur.getInstance().commandWindow.print("\t" + port.concat(" - ").concat("开启") + "\n");
+                Gopur.getLogger().info("\t" + port.concat(" - ").concat("开启"));
                 return true;
             }
             return false;
@@ -165,22 +157,23 @@ public class GopurTool {
             ArrayList<String> result = new ArrayList<>();
             String top = null;
             String s = string.toLowerCase();
-            for (Iterator<String> iterator = Gopur.getInstance().cmds.keySet().iterator(); iterator.hasNext();) {
+            for (Iterator<String> iterator = Gopur.getInstance().getCommandMap().getCommands().keySet().iterator(); iterator.hasNext();) {
                 String cmd = iterator.next();
                 String cmd1 = cmd.toLowerCase();
                 if (cmd1.length() == string.length()) { //绝对长度
                     if (cmd1.equals(s)) //匹配
                         top = cmd; //置顶
                 } else if (cmd1.length() > string.length()) { //相对长度
-                    if (cmd1.substring(0, string.length()).equals(s) || contains(cmd1, s))
+                    if (cmd1.substring(0, string.length()).equals(s))
                         result.add(cmd);
                 }
             }
             if (top != null)
                 result.add(0, top);
-            return result.toArray(new String[0]);
+            return sort(result.toArray(new String[0]));
         }
-        
+
+        /** 搜索算法
         private boolean contains(String string1, String string) {
             if (string1 == null || string == null || string1.length() == 0 || string.length() == 0)
                 return false;
@@ -195,14 +188,22 @@ public class GopurTool {
             }
             return ii == chars.length;
         }
+         **/
 
         private String[] sort(String[] array) {
             if (array.length == 0)
                 return new String[0];
-            for (int i = 0; i < array.length; i++) {
+            TreeSet<String> set = new TreeSet<>(new Compare());
+            Collections.addAll(set, array);
+            return set.toArray(new String[0]);
+        }
+    }
 
-            }
-            return array;
+    class Compare implements Comparator<String> {
+        @Override
+        public int compare(String o1, String o2) {
+            int temp = o1.length() - o2.length();
+            return temp == 0 ? o1.compareTo(o2) : temp;
         }
     }
 }

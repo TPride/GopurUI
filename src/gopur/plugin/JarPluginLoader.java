@@ -3,7 +3,6 @@ package gopur.plugin;
 import gopur.Gopur;
 import gopur.utils.PluginException;
 import gopur.utils.Utils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +24,7 @@ public class JarPluginLoader implements PluginLoader {
     public Plugin loadPlugin(File file) throws Exception {
         PluginDescription description = getPluginDescription(file);
         if (description != null) {
-            Gopur.getInstance().commandWindow.GopurPrint("正在加载 " + description.getFullName() + "...\n");
+            Gopur.getLogger().info("正在加载 " + description.getFullName() + "...");
             File dataFolder = new File(file.getParentFile(), description.getName());
             if (dataFolder.exists() && !dataFolder.isDirectory())
                 throw new IllegalStateException(description.getName() + "的数据文件夹" + dataFolder.toString() + "存在, 但不是一个目录");
@@ -45,7 +44,7 @@ public class JarPluginLoader implements PluginLoader {
                 } catch (ClassCastException e) {
                     throw new PluginException("初始化主类" + description.getMain() + "时出错");
                 } catch (InstantiationException | IllegalAccessException e) {
-                    Gopur.getInstance().commandWindow.GopurPrint(e.getMessage() + "\n");
+                    Gopur.getLogger().info(e.getMessage());
                 }
             } catch (ClassNotFoundException e) {
                 throw new PluginException("无法加载插件" + description.getMain() + ", 因为身为主类的它不存在");
@@ -86,7 +85,7 @@ public class JarPluginLoader implements PluginLoader {
     @Override
     public void enablePlugin(Plugin plugin) {
         if (plugin instanceof PluginBase && !plugin.isEnabled()) {
-            Gopur.getInstance().commandWindow.GopurPrint("正在启用 " + ((PluginBase) plugin).getPluginDescription().getFullName() + "...\n");
+            Gopur.getLogger().info("正在启用 " + ((PluginBase) plugin).getPluginDescription().getFullName() + "...");
             ((PluginBase) plugin).setEnabled(true);
         }
     }
@@ -99,7 +98,7 @@ public class JarPluginLoader implements PluginLoader {
     @Override
     public void disablePlugin(Plugin plugin) {
         if (plugin instanceof PluginBase && plugin.isEnabled()) {
-            Gopur.getInstance().commandWindow.GopurPrint("正在停用 " + ((PluginBase) plugin).getPluginDescription().getFullName() + "...\n");
+            Gopur.getLogger().info("正在停用 " + ((PluginBase) plugin).getPluginDescription().getFullName() + "...");
             ((PluginBase) plugin).setEnabled(false);
         }
     }

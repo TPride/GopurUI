@@ -1,9 +1,9 @@
-package gopur.uiFunc.ui.frame;
+package gopur.ui.frame;
 
 import gopur.Gopur;
-import gopur.uiFunc.GopurTool;
-import gopur.uiFunc.input.InputMode;
-import gopur.uiFunc.interfaces.Information;
+import gopur.GopurTool;
+import gopur.ui.input.InputMode;
+import gopur.Information;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -18,7 +18,6 @@ public class GopurCommandWindow {
 
     public GopurCommandWindow() {
         jFrame.setTitle("[GopurUI] - ".concat(Information.VERSION));
-        jFrame.setAlwaysOnTop(true);
         jFrame.setSize(700, 600);
         jFrame.setIconImage(new ImageIcon("resource/gopur.png").getImage());
         jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
@@ -64,11 +63,13 @@ public class GopurCommandWindow {
                         Gopur.getInstance().index = Gopur.getInstance().inputed.size();
                         //System.out.println(Gopur.getInstance().inputed);
                         InputPrintln(textField.getText());
-                        Gopur.gopurExecute.execute(GopurTool.getCmd(textField.getText()).trim(), GopurTool.getArgs(textField.getText()));
-                    } else {
+                        String cmdName = GopurTool.getCmd(textField.getText());
+                        if (Gopur.getInstance().getCommandMap().getCommands().containsKey(cmdName)) {
+                            Gopur.getInstance().getCommandMap().dispatch(textField.getText());
+                        } else
+                            GopurPrintln("未知指令 `" + cmdName + "`");
+                    } else
                         InputPrintln("");
-                        Gopur.gopurExecute.execute("", null);
-                    }
                     ///////////////////////////////////////////////
 
                     /**
@@ -84,7 +85,7 @@ public class GopurCommandWindow {
                     textArea.setCaretPosition(textArea.getText().length());
                     textField.setText("");
                 } catch (Exception ee) {
-
+                    
                 }
             }
         });
