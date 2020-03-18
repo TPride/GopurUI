@@ -32,12 +32,9 @@ import gopur.uiFunc.interfaces.Information;
 import gopur.uiFunc.thread.ThreadCount;
 import gopur.uiFunc.ui.GopurUI;
 import gopur.uiFunc.ui.frame.GopurCommandWindow;
-
-import javax.swing.*;
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
-import java.util.function.BiConsumer;
 
 public class Gopur {
     public final GopurUI gopurUI = new GopurUI();
