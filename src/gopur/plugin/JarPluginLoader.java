@@ -92,6 +92,7 @@ public class JarPluginLoader implements PluginLoader {
 
     private void initPlugin(PluginBase pluginBase, PluginDescription description, File dataFolder) {
         pluginBase.init(this, description, dataFolder);
+        dataFolder.mkdirs();
         pluginBase.onLoad();
     }
 
