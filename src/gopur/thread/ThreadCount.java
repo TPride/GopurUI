@@ -1,4 +1,4 @@
-package gopur.ui.thread;
+package gopur.thread;
 
 /**
  * Created by TPride on 2020/2/14.

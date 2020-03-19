@@ -1,4 +1,4 @@
-package gopur.ui.thread;
+package gopur.thread;
 
 import gopur.ui.input.InputMode;
 import gopur.Gopur;

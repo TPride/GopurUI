@@ -24,7 +24,7 @@ package gopur;
 import gopur.command.SimpleCommandMap;
 import gopur.plugin.*;
 import gopur.ui.input.InputReceive;
-import gopur.ui.thread.ThreadCount;
+import gopur.thread.ThreadCount;
 import gopur.ui.GopurUI;
 import gopur.ui.frame.GopurCommandWindow;
 import java.io.File;

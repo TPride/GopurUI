@@ -2,6 +2,8 @@ package gopur.command.gopur;
 
 import gopur.Gopur;
 import gopur.command.Command;
+import gopur.thread.ZipEnThread;
+import gopur.thread.ZipUnThread;
 import gopur.utils.Zip;
 import java.io.File;
 
@@ -66,19 +68,7 @@ public class ZipCommand extends Command {
                             pwd = args[3];
                         }
                     }
-                    long start = System.currentTimeMillis();
-                    boolean bo_result = Zip.zip(args[1], dest, pwd);
-                    long second = System.currentTimeMillis() - start;
-                    Gopur.getLogger().info(bo_result ? ""
-                            .concat("压缩成功")
-                            .concat("\n\t压缩目标路径: ".concat(args[1]))
-                            .concat("\n\t压缩文件路径: ".concat(dest))
-                            .concat("\n\t压缩文件大小: ".concat((Math.ceil(new File(dest).length() / 1024) + 1) + "KB"))
-                            .concat("\n\t是否已加密: ".concat(pwd == null ? "否" : "是"))
-                            .concat("\n\t用时: ".concat(second + "ms"))
-                            :
-                            "压缩失败"
-                    , 2);
+                    new ZipEnThread(args[1], dest, pwd).start();
                     break;
                 case "un":
                     if (!Zip.isZip(file)) {
@@ -107,16 +97,7 @@ public class ZipCommand extends Command {
                         Gopur.getLogger().info("请输入".concat(file.getName()).concat("的解压密码"), 2);
                         break;
                     }
-                    start = System.currentTimeMillis();
-                    bo_result = Zip.unzip(args[1], dest, pwd);
-                    second = System.currentTimeMillis() - start;
-                    Gopur.getLogger().info(bo_result ? ""
-                            .concat("解压成功")
-                            .concat("\n\t解压至路径: ".concat(dest))
-                            .concat("\n\t用时: ".concat(second + "ms"))
-                            :
-                            "解压失败, 密码错误"
-                    , 2);
+                    new ZipUnThread(args[1], dest, pwd).start();
                     break;
                 default:
                     Gopur.getLogger().info("未知参数 '".concat(args[0]).concat("'"), 2);
