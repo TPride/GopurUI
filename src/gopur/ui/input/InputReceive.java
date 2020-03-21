@@ -27,15 +27,6 @@ public class InputReceive {
                 mode = InputMode.CMD;
                 break;
             case 1:
-                mode = InputMode.USER;
-                break;
-            case 2:
-                mode = InputMode.PWD;
-                break;
-            case 3:
-                mode = InputMode.OTHER;
-                break;
-            case 4:
                 mode = InputMode.DONT;
                 break;
             default:

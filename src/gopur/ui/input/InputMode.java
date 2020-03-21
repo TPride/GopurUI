@@ -6,10 +6,7 @@ package gopur.ui.input;
 public enum InputMode {
 
     CMD(0),
-    USER(1),
-    PWD(2),
-    OTHER(3),
-    DONT(4);
+    DONT(1);
 
     private int number;
     private InputMode(int number) {
