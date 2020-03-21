@@ -173,7 +173,7 @@ public class GopurTool {
             return sort(result.toArray(new String[0]));
         }
 
-        /** 搜索算法
+        /** 对比算法(搜索用)
         private boolean contains(String string1, String string) {
             if (string1 == null || string == null || string1.length() == 0 || string.length() == 0)
                 return false;

@@ -22,6 +22,7 @@ package gopur;
 //               佛祖保佑         永无BUG
 
 import gopur.command.SimpleCommandMap;
+import gopur.event.Listener;
 import gopur.plugin.*;
 import gopur.ui.input.InputReceive;
 import gopur.thread.ThreadCount;
@@ -30,7 +31,7 @@ import gopur.ui.frame.GopurCommandWindow;
 import java.io.File;
 import java.util.ArrayList;
 
-public class Gopur {
+public class Gopur implements Listener {
     public final GopurUI gopurUI = new GopurUI();
     private static Gopur instance;
     public final ArrayList<String> inputed = new ArrayList<>();
@@ -55,15 +56,14 @@ public class Gopur {
         pluginManager.registerInterface(JarPluginLoader.class);
 
         Gopur.getLogger().info("欢迎使用GopurUI v".concat(Information.VERSION));
-
-        pluginManager.enablePlugins();
     }
 
     public static void main(String[] args) {
         try {
             new Gopur();
+            Gopur.getInstance().getPluginManager().enablePlugins();
         } catch (Exception ee) {
-
+            Gopur.getLogger().info("[ERROR] " + ee.toString());
         }
     }
 
@@ -71,7 +71,7 @@ public class Gopur {
         return instance;
     }
 
-    private final void initDir() {
+    private void initDir() {
         if (!new File(Information.NOWPATH + "plugins").exists())
             new File(Information.NOWPATH + "plugins").mkdirs();
     }

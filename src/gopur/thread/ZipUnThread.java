@@ -16,7 +16,7 @@ public class ZipUnThread extends Thread {
 
     @Override
     public void run() {
-        Gopur.getLogger().info("正在解压 " + new File(path).getName() + " ...");
+        Gopur.getLogger().info("正在解压 " + path + " ...");
         long start = System.currentTimeMillis();
         boolean bo_result = Zip.unzip(path, dest, pwd);
         long second = System.currentTimeMillis() - start;

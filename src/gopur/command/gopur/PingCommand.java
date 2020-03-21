@@ -6,7 +6,7 @@ import gopur.command.Command;
 
 public class PingCommand extends Command {
     public PingCommand() {
-        super("ping", "发送Ping包", "ping <IpAddress>");
+        super("ping", "基于cmd发送ping包", "ping <IpAddress>");
     }
 
     @Override

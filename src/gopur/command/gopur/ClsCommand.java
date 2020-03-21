@@ -1,8 +1,8 @@
 package gopur.command.gopur;
 
 import gopur.Gopur;
-import gopur.GopurTool;
 import gopur.command.Command;
+import gopur.event.console.ClearConsoleEvent;
 
 public class ClsCommand extends Command {
     public ClsCommand() {
@@ -11,7 +11,10 @@ public class ClsCommand extends Command {
 
     @Override
     public boolean execute(String full_line, String[] args) {
-        Gopur.getInstance().getCommandWindow().clear();
+        ClearConsoleEvent event;
+        Gopur.getInstance().getPluginManager().callEvent(event = new ClearConsoleEvent());
+        if (!event.isCancelled())
+            Gopur.getInstance().getCommandWindow().clear();
         return true;
     }
 }

@@ -2,7 +2,6 @@ package gopur.thread;
 
 import gopur.Gopur;
 import gopur.utils.Zip;
-
 import java.io.File;
 
 public class ZipEnThread extends Thread {
@@ -16,7 +15,7 @@ public class ZipEnThread extends Thread {
 
     @Override
     public void run() {
-        Gopur.getLogger().info("正在压缩 " + new File(path).getName() + " ...");
+        Gopur.getLogger().info("正在压缩 " + path + " ...");
         long start = System.currentTimeMillis();
         boolean bo_result = Zip.zip(path, dest, pwd);
         long second = System.currentTimeMillis() - start;

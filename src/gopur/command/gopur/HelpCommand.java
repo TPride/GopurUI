@@ -4,7 +4,6 @@ import gopur.Gopur;
 import gopur.command.Command;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class HelpCommand extends Command {
     public HelpCommand() {

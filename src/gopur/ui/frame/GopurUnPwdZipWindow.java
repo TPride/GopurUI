@@ -1,6 +1,7 @@
 package gopur.ui.frame;
 
 import gopur.Gopur;
+import gopur.thread.ZipUnThread;
 import gopur.ui.input.InputMode;
 import gopur.utils.Zip;
 
@@ -14,7 +15,6 @@ public class GopurUnPwdZipWindow {
     private final JFrame jFrame;
 
     public GopurUnPwdZipWindow(String filename, String path, String destino) {
-        Gopur.receive.setMode(InputMode.DONT);
         jFrame = new JFrame();
         jFrame.setLayout(null);
         jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -33,19 +33,7 @@ public class GopurUnPwdZipWindow {
                     return;
                 }
                 jFrame.dispose();
-                Gopur.receive.setMode(InputMode.CMD);
-                long start, second;
-                boolean bo_result;
-                start = System.currentTimeMillis();
-                bo_result = Zip.unzip(path, destino, textField.getText());
-                second = System.currentTimeMillis() - start;
-                Gopur.getLogger().info(bo_result ? ""
-                        .concat("解压成功")
-                        .concat("\n\t解压至路径: ".concat(destino))
-                        .concat("\n\t用时: ".concat(second + "ms"))
-                        :
-                        "解压失败, 密码错误"
-                , 2);
+                new ZipUnThread(path, destino, textField.getText());
             }
         });
 
@@ -58,7 +46,6 @@ public class GopurUnPwdZipWindow {
             @Override
             public void windowClosing(WindowEvent e) {
                 Gopur.getLogger().info("已取消对".concat(filename).concat("的解压"), 2);
-                Gopur.receive.setMode(InputMode.CMD);
             }
         });
 

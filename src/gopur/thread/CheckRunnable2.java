@@ -12,8 +12,6 @@ public class CheckRunnable2 implements Runnable {
         try {
             while (true) {
                 if (Gopur.count.getCount() == 0) {
-                    if (Gopur.receive.getMode() == InputMode.DONT)
-                        Gopur.receive.setMode(InputMode.CMD);
                     if (Gopur.count.getHave() == 0)
                         Gopur.getLogger().info("未扫描到已开放的端口", 2);
                     else

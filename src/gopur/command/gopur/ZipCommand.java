@@ -2,6 +2,8 @@ package gopur.command.gopur;
 
 import gopur.Gopur;
 import gopur.command.Command;
+import gopur.event.zip.ZipEnEvent;
+import gopur.event.zip.ZipUnEvent;
 import gopur.thread.ZipEnThread;
 import gopur.thread.ZipUnThread;
 import gopur.utils.Zip;
@@ -68,7 +70,12 @@ public class ZipCommand extends Command {
                             pwd = args[3];
                         }
                     }
-                    new ZipEnThread(args[1], dest, pwd).start();
+                    ZipEnEvent enEvent;
+                    Gopur.getInstance().getPluginManager().callEvent(enEvent = new ZipEnEvent(args[1], dest, pwd));
+                    if (!enEvent.isCancelled())
+                        new ZipEnThread(enEvent.getFilePath(), enEvent.getDestion(), enEvent.getPassword()).start();
+                    else
+                        Gopur.getLogger().info("压缩 " + enEvent.getFilePath() + " 的线程被取消");
                     break;
                 case "un":
                     if (!Zip.isZip(file)) {
@@ -97,7 +104,12 @@ public class ZipCommand extends Command {
                         Gopur.getLogger().info("请输入".concat(file.getName()).concat("的解压密码"), 2);
                         break;
                     }
-                    new ZipUnThread(args[1], dest, pwd).start();
+                    ZipUnEvent unEvent;
+                    Gopur.getInstance().getPluginManager().callEvent(unEvent = new ZipUnEvent(args[1], dest, pwd));
+                    if (!unEvent.isCancelled())
+                        new ZipUnThread(unEvent.getFilePath(), unEvent.getDestion(), unEvent.getPassword()).start();
+                    else
+                        Gopur.getLogger().info("解压 " + unEvent.getFilePath() + " 的线程被取消");
                     break;
                 default:
                     Gopur.getLogger().info("未知参数 '".concat(args[0]).concat("'"), 2);

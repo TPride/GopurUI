@@ -1,4 +1,4 @@
 package gopur.event;
 
-public class Listener {
+public interface Listener {
 }

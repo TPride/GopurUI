@@ -2,6 +2,7 @@ package gopur.ui.frame;
 
 import gopur.Gopur;
 import gopur.GopurTool;
+import gopur.event.command.InputCommandEvent;
 import gopur.ui.input.InputMode;
 import gopur.Information;
 import javax.swing.*;
@@ -28,6 +29,12 @@ public class GopurCommandWindow {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
                     Gopur.getInstance().getCommandMap().dispatch("exit");
+            }
+        });
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Gopur.getInstance().getCommandMap().dispatch("exit");
             }
         });
 
@@ -65,7 +72,10 @@ public class GopurCommandWindow {
                         InputPrintln(textField.getText());
                         String cmdName = GopurTool.getCmd(textField.getText());
                         if (Gopur.getInstance().getCommandMap().getCommands().containsKey(cmdName)) {
-                            Gopur.getInstance().getCommandMap().dispatch(textField.getText());
+                            InputCommandEvent event;
+                            Gopur.getInstance().getPluginManager().callEvent(event = new InputCommandEvent(textField.getText(), cmdName, GopurTool.getArgs(textField.getText())));
+                            if (!event.isCancelled())
+                                Gopur.getInstance().getCommandMap().dispatch(event.getFullLine());
                         } else
                             GopurPrintln("未知指令 `" + cmdName + "`");
                     } else

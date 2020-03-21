@@ -22,7 +22,7 @@ public class SimpleCommandMap implements CommandMap {
         register(new PingCommand()); //ping
         register(new ZipCommand()); //zip
         register(new PlCommand()); //pl
-    }
+}
 
     @Override
     public boolean register(Command command) {
