@@ -56,7 +56,6 @@ public class PortCommand extends Command {
             }
             if (!pattern.matcher(ports[0]).matches() || !pattern.matcher(ports[1]).matches()) {
                 Gopur.getLogger().info("无效端口", 2);
-                Gopur.receive.setMode(InputMode.CMD);
                 return true;
             }
             int begin, end;
