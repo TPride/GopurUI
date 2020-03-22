@@ -23,7 +23,7 @@ public class GopurCommandWindow {
         jFrame.setIconImage(new ImageIcon("resource/gopur.png").getImage());
         jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
         jFrame.setLocationRelativeTo(null);
-        jFrame.setResizable(false);
+        jFrame.setResizable(true);
         jFrame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -218,7 +218,6 @@ public class GopurCommandWindow {
         splitPane.setBackground(Color.BLACK);
         splitPane.setEnabled(false);
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setDividerLocation(((jFrame.getSize().width / 4) + (jFrame.getSize().width / 2)));
         splitPane.setContinuousLayout(true);
         splitPane.setDividerSize(0);
         splitPane.setIgnoreRepaint(true);
@@ -229,6 +228,12 @@ public class GopurCommandWindow {
             @Override
             public void windowOpened(WindowEvent e) {
                 textField.requestFocus();
+            }
+        });
+        jFrame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                splitPane.setDividerLocation((jFrame.getHeight() - 75));
             }
         });
         jFrame.setContentPane(splitPane);
