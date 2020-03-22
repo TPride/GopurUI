@@ -27,23 +27,19 @@ public class PortCommand extends Command {
             return true;
         }
         Pattern pattern = Pattern.compile("[0-9]*");
-        Gopur.receive.setMode(InputMode.DONT);
         ExecutorService executorService = null;
         if (args[1].length() == 0) {
             Gopur.getLogger().info("扫描失败, 端口出现错误", 2);
-            Gopur.receive.setMode(InputMode.CMD);
             return true;
         }
         if (args[1].contains(",") && args[1].contains("-")) {
             Gopur.getLogger().info("扫描失败, 格式出现错误", 2);
-            Gopur.receive.setMode(InputMode.CMD);
             return true;
         }
         if (args[1].contains(",")) {
             String[] ports = args[1].split(",");
             if (ports.length > 100) {
                 Gopur.getLogger().info("每次只能扫描100个端口", 2);
-                Gopur.receive.setMode(InputMode.CMD);
                 return true;
             }
             Gopur.getLogger().info("Gopur > 请耐心等待, 正在扫描...");
@@ -56,7 +52,6 @@ public class PortCommand extends Command {
             String[] ports = args[1].split("-");
             if (ports.length < 2) {
                 Gopur.getLogger().info("格式错误", 2);
-                Gopur.receive.setMode(InputMode.CMD);
                 return true;
             }
             if (!pattern.matcher(ports[0]).matches() || !pattern.matcher(ports[1]).matches()) {
@@ -69,12 +64,10 @@ public class PortCommand extends Command {
             end = Integer.parseInt(ports[1]);
             if ((begin > end && begin - end > 100) || (end > begin && end - begin > 100)) {
                 Gopur.getLogger().info("每次只能扫描100个端口", 2);
-                Gopur.receive.setMode(InputMode.CMD);
                 return true;
             }
             if (begin == end) {
                 Gopur.getLogger().info("端口不能相同", 2);
-                Gopur.receive.setMode(InputMode.CMD);
                 return true;
             }
             Gopur.getLogger().info("Gopur > 请耐心等待, 正在扫描...");
@@ -91,12 +84,10 @@ public class PortCommand extends Command {
         } else {
             if (!pattern.matcher(args[1]).matches()) {
                 Gopur.getLogger().info("无效端口", 2);
-                Gopur.receive.setMode(InputMode.CMD);
                 return true;
             }
             if (Integer.parseInt(args[1]) < 1 || Integer.parseInt(args[1]) > 65535) {
                 Gopur.getLogger().info("无效端口", 2);
-                Gopur.receive.setMode(InputMode.CMD);
                 return true;
             }
             Gopur.getLogger().info("Gopur > 请耐心等待, 正在扫描...");
@@ -105,10 +96,8 @@ public class PortCommand extends Command {
             else
                 Gopur.getLogger().info("扫描完毕", 2);
         }
-        if (executorService != null) executorService.shutdown();
-        if (!args[1].contains(",") && !args[1].contains("-")) {
-            Gopur.receive.setMode(InputMode.CMD);
-        }
+        if (executorService != null)
+            executorService.shutdown();
         return true;
     }
 }
