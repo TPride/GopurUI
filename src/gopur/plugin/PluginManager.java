@@ -6,8 +6,6 @@ import gopur.event.Event;
 import gopur.event.EventHandler;
 import gopur.event.HandlerList;
 import gopur.event.Listener;
-import gopur.utils.PluginException;
-
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

@@ -3,6 +3,7 @@ package gopur.ui.frame;
 import gopur.Gopur;
 import gopur.GopurTool;
 import gopur.event.command.InputCommandEvent;
+import gopur.event.key.InputTabEvent;
 import gopur.ui.input.InputMode;
 import gopur.Information;
 import javax.swing.*;
@@ -13,9 +14,8 @@ public class GopurCommandWindow {
     private JFrame jFrame = new JFrame();
     private JTextArea textArea = new JTextArea();
     private JSplitPane splitPane = new JSplitPane(), splitPane1 = new JSplitPane();
-    private boolean isTab = false;
-    private int tabArrayIndex = -1;
-    private String[] tabArray = null;
+    private JTextField textField = new JTextField();
+    private GopurTool.TabInput tabInput = Gopur.gopurTool.getTabInput();
 
     public GopurCommandWindow() {
         jFrame.setTitle("[GopurUI] - ".concat(Information.VERSION));
@@ -24,21 +24,7 @@ public class GopurCommandWindow {
         jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
         jFrame.setLocationRelativeTo(null);
         jFrame.setResizable(true);
-        jFrame.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-                    Gopur.getInstance().getCommandMap().dispatch("exit");
-            }
-        });
-        jFrame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                Gopur.getInstance().getCommandMap().dispatch("exit");
-            }
-        });
 
-        JTextField textField = new JTextField();
         textField.setFocusTraversalKeysEnabled(false);
         textField.setFont(new Font(null, Font.BOLD, 14));
         textField.addActionListener(new ActionListener() {
@@ -68,7 +54,6 @@ public class GopurCommandWindow {
                             }
                         }
                         Gopur.getInstance().index = Gopur.getInstance().inputed.size();
-                        //System.out.println(Gopur.getInstance().inputed);
                         InputPrintln(textField.getText());
                         String cmdName = GopurTool.getCmd(textField.getText());
                         if (Gopur.getInstance().getCommandMap().getCommands().containsKey(cmdName)) {
@@ -77,7 +62,7 @@ public class GopurCommandWindow {
                             if (!event.isCancelled())
                                 Gopur.getInstance().getCommandMap().dispatch(event.getFullLine());
                         } else
-                            GopurPrintln("未知指令 `" + cmdName + "`");
+                            GopurPrintln("未知指令 `" + (cmdName == null ? "" : cmdName) + "`");
                     } else
                         InputPrintln("");
                     ///////////////////////////////////////////////
@@ -86,16 +71,13 @@ public class GopurCommandWindow {
                      * 重置TAB变量
                      */
                     ///////////////////////////////////////////////
-                    if (isTab) {
-                        isTab = false;
-                        tabArrayIndex = -1;
-                        tabArray = null;
-                    }
+                    if (tabInput.isTab)
+                        tabInput.clear();
                     ///////////////////////////////////////////////
                     textArea.setCaretPosition(textArea.getText().length());
                     textField.setText("");
                 } catch (Exception ee) {
-                    
+                    //no-code
                 }
             }
         });
@@ -118,11 +100,8 @@ public class GopurCommandWindow {
                     textField.setText(Gopur.getInstance().inputed.get(Gopur.getInstance().index));
                 }
                 if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE || e.getKeyCode() == KeyEvent.VK_DELETE) {
-                    if (isTab) {
-                        isTab = false;
-                        tabArrayIndex = -1;
-                        tabArray = null;
-                    }
+                    if (tabInput.isTab)
+                        tabInput.clear();
                     if (textField.getText() != null && textField.getText().replace(" ", "").length() > 0 && !textField.getText().equalsIgnoreCase(""))
                         if (Gopur.getInstance().inputed.size() > 0)
                             if (!Gopur.getInstance().inputed.get(Gopur.getInstance().inputed.size() - 1).equals(textField.getText()))
@@ -131,37 +110,40 @@ public class GopurCommandWindow {
                 ///////////////////////////////////////////////
 
                 /**
-                 * TAB自动联想
+                 * TAB自动填充
                  */
                 ///////////////////////////////////////////////
                 if (e.getKeyCode() == KeyEvent.VK_TAB) {
-                    if (!isTab) {
-                        if (textField.getText() == null || textField.getText().contains(" "))
-                            return;
-                        String[] strings = Gopur.gopurTool.getTabInput().matchCommands(textField.getText());
-                        if (strings.length == 0)
-                            return;
-                        else if (strings.length > 1) {
-                            isTab = true;
-                            tabArrayIndex = 0;
-                            tabArray = strings;
+                    InputTabEvent event;
+                    Gopur.getInstance().getPluginManager().callEvent(event = new InputTabEvent(textField.getText()));
+                    if (!event.isCancelled()) {
+                        if (event.isEnableTab) {
+                            if (!tabInput.isTab) {
+                                if (event.getCmd() == null || event.getFullCmd().contains(" "))
+                                    return;
+                                String re = tabInput.match(event.getCmd(), Gopur.getInstance().getCommandMap().getCommands().keySet());
+                                textField.setText(re);
+                            } else {
+                                if (event.getFullCmd().contains(" ")) {
+                                    tabInput.clear();
+                                    return;
+                                }
+                                textField.setText(tabInput.next());
+                            }
                         }
-                        textField.setText(strings[0]);
-                    } else {
-                        if (tabArrayIndex + 1 >= tabArray.length)
-                            tabArrayIndex = 0;
-                        else
-                            tabArrayIndex += 1;
-                        textField.setText(tabArray[tabArrayIndex]);
                     }
                 }
+
+                ///////////////////////////////////////////////
+                if (e.getKeyCode() == KeyEvent.VK_F1)
+                    textField.setText(""); //清空文本
                 ///////////////////////////////////////////////
             }
         });
         textField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                jFrame.setCursor(new Cursor(Cursor.TEXT_CURSOR));
+                jFrame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
 
             @Override
@@ -169,8 +151,21 @@ public class GopurCommandWindow {
                 jFrame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
+        textField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    if (Gopur.gopurTool.getClipBoard().getClipboardString() != null && Gopur.gopurTool.getClipBoard().getClipboardString().length() > 0) {
+                        textField.setText((textField.getText() == null ? "" : textField.getText()) + Gopur.gopurTool.getClipBoard().getClipboardString());
+                        textField.requestFocus();
+                    }
+                }
+            }
+        });
 
         textArea.setLineWrap(true);
+        textArea.setBorder(BorderFactory.createEmptyBorder());
+        textArea.setSelectedTextColor(Color.GRAY);
         textArea.setFont(new Font("宋体", Font.BOLD, 14));
         textArea.setBackground(Color.BLACK);
         //textArea.setBackground(new Color(50, 59, 72));
@@ -180,6 +175,29 @@ public class GopurCommandWindow {
             @Override
             public void focusGained(FocusEvent e) {
                 jFrame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+        textArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                    Gopur.getInstance().getCommandMap().dispatch("exit");
+                else if (e.getKeyCode() == KeyEvent.VK_F11) {
+                    if (jFrame.getExtendedState() == JFrame.NORMAL)
+                        jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    else
+                        jFrame.setExtendedState(JFrame.NORMAL);
+                }
+            }
+        });
+        textArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    if (textArea.getSelectedText() != null && textArea.getSelectedText().length() > 0) {
+                        Gopur.gopurTool.getClipBoard().setClipboardString(textArea.getSelectedText());
+                    }
+                }
             }
         });
 
@@ -241,22 +259,27 @@ public class GopurCommandWindow {
 
     public void GopurPrint(String string) {
         textArea.append("Gopur > ".concat(string));
+        textArea.setCaretPosition(textArea.getText().length());
     }
 
     public void GopurPrintln(String string) {
         textArea.append("Gopur > ".concat(string).concat("\n\n"));
+        textArea.setCaretPosition(textArea.getText().length());
     }
 
     public void InputPrint(String string) {
         textArea.append("Input > ".concat(string));
+        textArea.setCaretPosition(textArea.getText().length());
     }
 
     public void InputPrintln(String string) {
         textArea.append("Input > ".concat(string).concat("\n"));
+        textArea.setCaretPosition(textArea.getText().length());
     }
 
     public void print(String string) {
         textArea.append(string);
+        textArea.setCaretPosition(textArea.getText().length());
     }
 
     public void clear() {

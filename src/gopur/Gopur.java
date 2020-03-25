@@ -67,7 +67,7 @@ public class Gopur implements Listener {
         }
     }
 
-    public final static Gopur getInstance() {
+    public static Gopur getInstance() {
         return instance;
     }
 
@@ -88,7 +88,7 @@ public class Gopur implements Listener {
         return commandMap;
     }
 
-    public static final Logger getLogger() {
+    public static Logger getLogger() {
         return mainLogger;
     }
 }
