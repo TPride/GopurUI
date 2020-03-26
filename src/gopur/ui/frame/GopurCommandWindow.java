@@ -30,17 +30,13 @@ public class GopurCommandWindow {
          */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventPostProcessor(new KeyEventPostProcessor() {
             public boolean postProcessKeyEvent(KeyEvent e) {
-                gopur.event.key.KeyEvent event;
-                Gopur.getInstance().getPluginManager().callEvent(event = new gopur.event.key.KeyEvent(e));
-                if (!event.isCancelled()) {
-                    if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-                        Gopur.getInstance().getCommandMap().dispatch("exit");
-                    else if (e.getKeyCode() == KeyEvent.VK_F11) {
-                        if (jFrame.getExtendedState() == JFrame.NORMAL)
-                            jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                        else
-                            jFrame.setExtendedState(JFrame.NORMAL);
-                    }
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                    Gopur.getInstance().getCommandMap().dispatch("exit");
+                else if (e.getKeyCode() == KeyEvent.VK_F11) {
+                    if (jFrame.getExtendedState() == JFrame.NORMAL)
+                        jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    else
+                        jFrame.setExtendedState(JFrame.NORMAL);
                 }
                 return false;
             }
