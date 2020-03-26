@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class PlCommand extends Command {
     public PlCommand() {
-        super("pl", "查看已加载的插件", "pl");
+        super("pl", "查看插件列表", "pl");
     }
 
     @Override
