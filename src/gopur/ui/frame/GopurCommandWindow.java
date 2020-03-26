@@ -42,7 +42,8 @@ public class GopurCommandWindow {
                             jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                         else
                             jFrame.setExtendedState(JFrame.NORMAL);
-                    }
+                    } else if (e.getKeyCode() == KeyEvent.VK_F2)
+                        textField.requestFocus();
                 }
                 return false;
             }
@@ -50,7 +51,7 @@ public class GopurCommandWindow {
 
         textField.setFocusTraversalKeysEnabled(false);
         textField.setFont(new Font(null, Font.BOLD, 14));
-        if (!Gopur.getInstance().isReloading) {
+        if (    !Gopur.getInstance().isReloading) {
             textField.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

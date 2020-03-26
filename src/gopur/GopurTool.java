@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.*;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GopurTool {
@@ -45,6 +46,16 @@ public class GopurTool {
         } catch (Exception e) {
             return new String[0];
         }
+    }
+
+    public static int getChineseCount(String string) {
+        if (string == null || string.length() == 0)
+            return 0;
+        int count = 0;
+        Matcher matcher = Pattern.compile("[\\u4e00-\\u9fa5]").matcher(string);
+        while (matcher.find())
+            count++;
+        return count;
     }
 
     public DomainName getDomainName(String domainName) {

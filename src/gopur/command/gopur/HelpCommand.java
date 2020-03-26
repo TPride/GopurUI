@@ -1,8 +1,11 @@
 package gopur.command.gopur;
 
 import gopur.Gopur;
+import gopur.GopurTool;
 import gopur.command.Command;
 import java.util.ArrayList;
+import java.util.function.Consumer;
+
 public class HelpCommand extends Command {
     public HelpCommand() {
         super("help", "查看帮助", "help <command>");
@@ -14,32 +17,36 @@ public class HelpCommand extends Command {
             Gopur.getLogger().info("所查看的指令有误", 2);
         } else {
             if (args.length == 0) {
-                int i = 0;
+                final int[] i = {0};
                 int k = 0;
-                int longest = 0;
+                final int[] longest = {0};
                 ArrayList<Command> commands = new ArrayList<>(Gopur.getInstance().getCommandMap().getCommands().values());
                 String[] result = new String[commands.size()];
                 StringBuffer stringBuffer = new StringBuffer();
                 stringBuffer.append("\n\t");
-                for (Command command : commands) {
-                    String help_string = command.getName() + " - " + command.getDescription();
-                    if (longest < help_string.length())
-                        longest = help_string.length();
-                    result[i] = help_string;
-                    i++;
-                }
-                for (int ii = 1; ii <= result.length; ii++) {
-                    if (ii % 2 != 0) {
-                        if (result[ii-1].length() < longest) {
-                            int reduce = longest - result[ii-1].length() - ((result.length) - ii == 1 ? 2 : 0);
-                            for (int j = 0; j < reduce + 1; j++)
-                                result[ii-1] += " ";
+                commands.forEach(new Consumer<Command>() {
+                    @Override
+                    public void accept(Command command) {
+                        String help_string = command.getName() + " - " + command.getDescription();
+                        if (longest[0] < help_string.length() && (commands.size() - 1) - i[0] != 0)
+                            longest[0] = help_string.length();
+                        result[i[0]] = help_string;
+                        i[0]++;
+                    }
+                });
+                for (int ii = 0; ii < result.length; ii++) {
+                    if ((ii + 1) % 2 != 0) {
+                        if (result[ii].length() < longest[0]) {
+                            int count = GopurTool.getChineseCount(result[ii]);
+                            int reduce = longest[0] - result[ii].length() - (count >= 5 ? (count - 4) : 0);
+                            for (int j = 0; j <= reduce; j++)
+                                result[ii] += " ";
                         }
                     }
                 }
                 for (String command : result) {
                     k++;
-                    stringBuffer.append(command).append(k % 2 == 0 ? "\n\t" : "\t");
+                    stringBuffer.append(command).append(k % 2 == 0 ? "\n\t" : (commands.size() - k != 0 ? "\t" : ""));
                 }
                 Gopur.getLogger().info(stringBuffer.toString());
                 return true;
