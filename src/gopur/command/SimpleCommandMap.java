@@ -22,6 +22,7 @@ public class SimpleCommandMap implements CommandMap {
         register(new PingCommand()); //ping
         register(new ZipCommand()); //zip
         register(new PlCommand()); //pl
+        register(new ReloadCommand()); //reload
 }
 
     @Override
@@ -35,8 +36,25 @@ public class SimpleCommandMap implements CommandMap {
     }
 
     @Override
+    public boolean unregister(String commndName) {
+        if (!getCommands().containsKey(commndName))
+            return false;
+        getCommands().remove(commndName);
+        return true;
+    }
+
+    @Override
+    public boolean unregister(Command command) {
+        if (getCommands().containsValue(command)) {
+            getCommands().values().removeIf(command1 -> command1.equals(command));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Command getCommand(String name) {
-        return commands.containsKey(name) ? commands.get(name) : null;
+        return commands.getOrDefault(name, null);
     }
 
     @Override

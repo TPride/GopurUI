@@ -101,6 +101,7 @@ public class JarPluginLoader implements PluginLoader {
         if (plugin instanceof PluginBase && plugin.isEnabled()) {
             Gopur.getLogger().info("正在停用 " + ((PluginBase) plugin).getPluginDescription().getFullName() + "...");
             ((PluginBase) plugin).setEnabled(false);
+            removeClass(plugin.getPluginDescription().getName());
         }
     }
 
@@ -126,6 +127,6 @@ public class JarPluginLoader implements PluginLoader {
     }
 
     private void removeClass(String name) {
-        Class<?> clazz = classMap.remove(name);
+        classMap.remove(name);
     }
 }

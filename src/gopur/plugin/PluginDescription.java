@@ -1,5 +1,6 @@
 package gopur.plugin;
 
+import gopur.Gopur;
 import gopur.utils.PluginException;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -15,6 +16,7 @@ public class PluginDescription implements DescriptionKey {
     private String description; //Plugin Description
     private String version; //Plugin Version
     private final List<String> authors = new ArrayList<>();
+    private PluginLoadOrder order = PluginLoadOrder.POSTWORLD;
 
     public PluginDescription(String yamlString) {
         DumperOptions dumperOptions = new DumperOptions();
@@ -40,33 +42,41 @@ public class PluginDescription implements DescriptionKey {
             authors.addAll(new ArrayList<>(author.split(",").length));
         else
             authors.add(author);
+        if (map.containsKey("load")) {
+            try {
+                String order = String.valueOf(map.get("load"));
+                this.order = PluginLoadOrder.valueOf(order);
+            } catch (Exception e) {
+                Gopur.getLogger().info(name + " 加载的优先级出现错误");
+            }
+        }
     }
 
-    /**
-     * 返回插件的完整名称
-     * @return 插件的完整名称
-     */
     public String getFullName() {
         return name + " v" + version;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public List<String> getAuthors() {
+    public final List<String> getAuthors() {
         return authors;
     }
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
-    public String getMain() {
+    public final String getMain() {
         return main;
     }
 
-    public String getVersion() {
+    public final String getVersion() {
         return version;
+    }
+
+    public final PluginLoadOrder getOrder() {
+        return order;
     }
 }

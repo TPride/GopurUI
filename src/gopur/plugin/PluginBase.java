@@ -1,5 +1,7 @@
 package gopur.plugin;
 
+import gopur.Gopur;
+
 import java.io.File;
 
 public class PluginBase implements Plugin {
@@ -44,8 +46,10 @@ public class PluginBase implements Plugin {
             isEnabled = s;
             if (isEnabled)
                 onEnable();
-            else
+            else {
+                Gopur.getInstance().getPluginManager().disablePlugin(this);
                 onDisable();
+            }
         }
     }
 

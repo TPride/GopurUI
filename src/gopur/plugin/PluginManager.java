@@ -65,6 +65,15 @@ public class PluginManager {
         return null;
     }
 
+    public void loadPlugins() {
+        File[] files = new File(Information.NOWPATH + "plugins").listFiles();
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isDirectory())
+                continue;
+            Plugin plugin = loadPlugin(files[i], null);
+        }
+    }
+
     public void enablePlugin(Plugin plugin) {
         try {
             plugin.getPluginLoader().enablePlugin(plugin);
@@ -73,17 +82,16 @@ public class PluginManager {
         }
     }
 
-    public void enablePlugins() {
-        File[] files = new File(Information.NOWPATH + "plugins").listFiles();
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory())
-                continue;
-            Plugin plugin = loadPlugin(files[i], null);
-            if (plugin != null) {
-                if (!plugin.isEnabled())
-                    enablePlugin(plugin);
-            }
+    public void enablePlugins(PluginLoadOrder pluginLoadOrder) {
+        for (Plugin plugin : new ArrayList<>(plugins.values())) {
+            if (!plugin.isEnabled() && plugin.getPluginDescription().getOrder() == pluginLoadOrder)
+                enablePlugin(plugin);
         }
+    }
+
+    public void enablePlugins() {
+        enablePlugins(PluginLoadOrder.STARTUP);
+        enablePlugins(PluginLoadOrder.POSTWORLD);
     }
 
     public void disablePlugin(Plugin plugin) {
@@ -159,6 +167,11 @@ public class PluginManager {
         } catch (IllegalAccessException e) {
             Gopur.getLogger().info("[ERROR] " + e.toString());
         }
+    }
+
+    public void clearPlugins() {
+        plugins.clear();
+        fileAssociations.clear();
     }
 
     private HandlerList getEventListeners(Class<? extends Event> type) throws IllegalAccessException {

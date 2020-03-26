@@ -1,14 +1,12 @@
 package gopur.command;
 
+import gopur.plugin.Plugin;
+
 public abstract class Command {
     private final String name;
     protected String description;
     protected String usage;
     private CommandMap commandMap = null;
-
-    public Command(String name) {
-        this(name, null, null);
-    }
 
     public Command(String name, String description, String usage) {
         this.name = name;

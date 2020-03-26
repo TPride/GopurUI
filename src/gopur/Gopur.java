@@ -32,16 +32,26 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class Gopur implements Listener {
+    public boolean isReloading = false;
+
     public final GopurUI gopurUI = new GopurUI();
+
     private static Gopur instance;
+
     public final ArrayList<String> inputed = new ArrayList<>();
     public int index = inputed.size();
+
     public static final GopurTool gopurTool = new GopurTool();
+
     public static final InputReceive receive = new InputReceive();
     public static final ThreadCount count = new ThreadCount(0);
+
     private static final Logger mainLogger = new MainLogger();
+
     private final GopurCommandWindow commandWindow;
+
     private final PluginManager pluginManager;
+
     private final SimpleCommandMap commandMap;
 
     public Gopur() {
@@ -49,22 +59,20 @@ public class Gopur implements Listener {
         initDir();
         commandMap = new SimpleCommandMap();
         commandWindow = gopurUI.commandWindows();
+
+        getLogger().info("欢迎使用GopurUI v".concat(Information.VERSION));
+
         /**
          * Plugins init
          */
         pluginManager = new PluginManager();
         pluginManager.registerInterface(JarPluginLoader.class);
-
-        Gopur.getLogger().info("欢迎使用GopurUI v".concat(Information.VERSION));
+        pluginManager.loadPlugins();
     }
 
     public static void main(String[] args) {
-        try {
-            new Gopur();
-            Gopur.getInstance().getPluginManager().enablePlugins();
-        } catch (Exception ee) {
-            Gopur.getLogger().info("[ERROR] " + ee.toString());
-        }
+        new Gopur();
+        getInstance().getPluginManager().enablePlugins();
     }
 
     public static Gopur getInstance() {
