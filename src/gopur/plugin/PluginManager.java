@@ -21,7 +21,7 @@ public class PluginManager {
     }
 
     public Plugin getPlugin(String name) {
-        return plugins.containsKey(name) ? plugins.get(name) : null;
+        return plugins.getOrDefault(name, null);
     }
 
     public Map<String, Plugin> getPlugins() {
