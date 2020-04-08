@@ -5,17 +5,15 @@ import java.nio.charset.StandardCharsets;
 
 public class Utils {
     public static String readFile(File file) throws IOException {
-        if (!file.exists() || file.isDirectory()) {
+        if (!file.exists() || file.isDirectory())
             throw new FileNotFoundException();
-        }
         return readFile(new FileInputStream(file));
     }
 
     public static String readFile(String filename) throws IOException {
         File file = new File(filename);
-        if (!file.exists() || file.isDirectory()) {
+        if (!file.exists() || file.isDirectory())
             throw new FileNotFoundException();
-        }
         return readFile(new FileInputStream(file));
     }
 
@@ -29,9 +27,8 @@ public class Utils {
             StringBuilder stringBuilder = new StringBuilder();
             temp = br.readLine();
             while (temp != null) {
-                if (stringBuilder.length() != 0) {
+                if (stringBuilder.length() != 0)
                     stringBuilder.append("\n");
-                }
                 stringBuilder.append(temp);
                 temp = br.readLine();
             }
