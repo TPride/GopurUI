@@ -48,7 +48,7 @@ public class HelpCommand extends Command {
                     k++;
                     stringBuffer.append(command).append(k % 2 == 0 ? "\n\t" : (commands.size() - k != 0 ? "\t" : ""));
                 }
-                Gopur.getLogger().info(stringBuffer.toString());
+                Gopur.getLogger().info(stringBuffer.toString(), 2);
                 return true;
             }
             if (args[0].length() == 0) {

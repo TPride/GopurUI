@@ -75,7 +75,7 @@ public class ZipCommand extends Command {
                     if (!enEvent.isCancelled())
                         new ZipEnThread(enEvent.getFilePath(), enEvent.getDestion(), enEvent.getPassword()).start();
                     else
-                        Gopur.getLogger().info("压缩 " + enEvent.getFilePath() + " 的线程被取消");
+                        Gopur.getLogger().info("压缩 " + enEvent.getFilePath() + " 的线程被取消", 2);
                     break;
                 case "un":
                     if (!Zip.isZip(file)) {
@@ -109,7 +109,7 @@ public class ZipCommand extends Command {
                     if (!unEvent.isCancelled())
                         new ZipUnThread(unEvent.getFilePath(), unEvent.getDestion(), unEvent.getPassword()).start();
                     else
-                        Gopur.getLogger().info("解压 " + unEvent.getFilePath() + " 的线程被取消");
+                        Gopur.getLogger().info("解压 " + unEvent.getFilePath() + " 的线程被取消", 2);
                     break;
                 default:
                     Gopur.getLogger().info("未知参数 '".concat(args[0]).concat("'"), 2);

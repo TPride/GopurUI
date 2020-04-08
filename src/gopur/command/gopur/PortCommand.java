@@ -42,7 +42,7 @@ public class PortCommand extends Command {
                 Gopur.getLogger().info("每次只能扫描100个端口", 2);
                 return true;
             }
-            Gopur.getLogger().info("Gopur > 请耐心等待, 正在扫描...");
+            Gopur.getLogger().info("请耐心等待, 正在扫描...");
             Gopur.count.setCount(ports.length);
             executorService = Executors.newFixedThreadPool(Gopur.count.getCount());
             for (int i = 0; i < Gopur.count.getCount(); i++)
@@ -69,7 +69,7 @@ public class PortCommand extends Command {
                 Gopur.getLogger().info("端口不能相同", 2);
                 return true;
             }
-            Gopur.getLogger().info("Gopur > 请耐心等待, 正在扫描...");
+            Gopur.getLogger().info("请耐心等待, 正在扫描...");
             Gopur.count.setCount(((begin > end) ? begin - end : end - begin));
             executorService = Executors.newFixedThreadPool(Gopur.count.getCount());
             if (begin > end) {
@@ -89,7 +89,7 @@ public class PortCommand extends Command {
                 Gopur.getLogger().info("无效端口", 2);
                 return true;
             }
-            Gopur.getLogger().info("Gopur > 请耐心等待, 正在扫描...");
+            Gopur.getLogger().info("请耐心等待, 正在扫描...");
             if (!portCheck.checkPrint(args[1]))
                 Gopur.getLogger().info(args[1] + " 端口超时", 2);
             else
